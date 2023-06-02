@@ -22,17 +22,41 @@ module.exports = {
         res.status(200).json(resObj);
       })
       .catch((err) => {
-        console.log('getReviews Error', err);
-        res.sendStatus(500);
+        if (err.code === 0) {
+          console.log('Query Result Error:', err.message);
+          const resObj = {
+            product_id,
+            page: (page - 1) * count || 0,
+            count: Number(count) || 5,
+            results: [],
+          };
+          res.status(200).json(resObj);
+        } else {
+          console.log('getReviews Error', err);
+          res.sendStatus(500);
+        }
       });
   },
   getMeta: (req, res) => {
     const { product_id } = req.query;
     queryMeta(product_id)
-      .then((results) => res.status(200).json(results))
+      .then((results) => {
+        res.status(200).json(results);
+      })
       .catch((err) => {
-        console.log('getMeta Error:', err);
-        res.sendStatus(500);
+        if (err.code === 0) {
+          console.log('Query Result Error:', err.message);
+          const resObj = {
+            product_id,
+            ratings: {},
+            recommended: {},
+            characteristics: {},
+          };
+          res.status(200).json(resObj);
+        } else {
+          console.log('getMeta Error:', err);
+          res.sendStatus(500);
+        }
       });
   },
   postReview: (req, res) => {

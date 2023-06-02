@@ -1,8 +1,16 @@
 ## dirs
 node_modules/
+coverage/
 
 ## OS
 .DS_Store
 
 ## config
 .env
+
+# docker
+Dockerfile
+.dockerignore
+
+#SQL
+*.pgsql*

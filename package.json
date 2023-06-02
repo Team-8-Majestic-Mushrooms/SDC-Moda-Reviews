@@ -4,8 +4,8 @@
   "description": "Reviews endpoint backend for Moda e-commerce web application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server-dev": "npx nodemon ./server/index.js"
+    "test": "jest",
+    "server-dev": "npx nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,8 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
   }
 }

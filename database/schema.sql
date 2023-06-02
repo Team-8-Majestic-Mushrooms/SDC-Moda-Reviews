@@ -82,7 +82,10 @@ CREATE OR REPLACE FUNCTION dynamic_photo_agg(input_param INTEGER)
 $$
 BEGIN
   RETURN QUERY EXECUTE format('
-    SELECT review_id, jsonb_agg(jsonb_build_object(%L, id, %L, url)) AS photos
+    SELECT
+      review_id,
+      jsonb_agg(jsonb_build_object(%L, id, %L, url))
+      AS photos
     FROM photos
     WHERE review_id = %s
     GROUP BY review_id;', 'id', 'url', input_param);
@@ -99,6 +102,7 @@ CREATE TABLE characteristics (
 
 \copy characteristics from '../SDC_Data/characteristics.csv' with csv header;
 
+CREATE INDEX ch_idx_product_id ON characteristics(product_id);
 SELECT setval('characteristics_id_seq'::regclass, COALESCE((SELECT MAX(id) + 1 FROM characteristics), 1), false);
 
 -- Characteristic_Reviews
@@ -156,16 +160,16 @@ LANGUAGE plpgsql;
 
 
 
-SELECT
-  product_id,
-  JSONB_OBJECT_AGG(
-    name,
-    JSONB_BUILD_OBJECT(
-    'id', id,
-    'value', avg_value::text
-  )) characteristics
-FROM generate_dynamic_view(56788)
-GROUP BY product_id;
+-- SELECT
+--   product_id,
+--   JSONB_OBJECT_AGG(
+--     name,
+--     JSONB_BUILD_OBJECT(
+--     'id', id,
+--     'value', avg_value::text
+--   )) characteristics
+-- FROM generate_dynamic_view(56788)
+-- GROUP BY product_id;
 
 
 --  average rating view
